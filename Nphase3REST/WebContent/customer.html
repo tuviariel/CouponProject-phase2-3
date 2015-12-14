@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+<script src="customer.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1255">
+<title>Customer</title>
+</head>
+<body>
+<!-- MAIN DIV -->
+<div ng-app="myApp123">
+
+	<!--login div-->
+	<div ng-controller="loginController" ng-show="loginFlag">
+	<table>
+		<tr><td>
+				Please enter your name:
+			</td><td>
+				<input type="text" ng-model="name">
+		</td></tr>
+		<tr><td>
+				Please enter your password:
+			</td><td>
+				<input type="password" ng-model="password">
+		</td></tr>
+		<tr><td></td><td>
+				<input type="button" value="Login" ng-click="login()">
+		</td></tr>
+	</table>
+	<br>{{loginResult}}<br>
+	<a href="index.html">Leave to Main Menu</a>
+	</div>
+<!--end login div-->
+
+<!--customer div-->
+	<div ng-controller="customerController" ng-show="customerFlag">
+		<h1>{{header}}</h1>
+		<table border="1" style="width:100%">
+			<tr align="center">
+				<td>Title</td>
+				<td>Price</td>
+				<td>ID</td>
+				<td>Coupon Image</td>
+				<td>Side Comment</td>
+				<!-- td>Amount in Stock</td -->
+				<td>Category Type</td>
+				<td>Expiration Date</td>
+				<td>In the market since:</td>
+			</tr><tr align="center" ng-repeat="x in allCoupons.slice(0,-2)  | orderBy: 'title' ">
+				<td>{{x.title}}</td>
+				<td>{{x.price}}</td>
+				<td>({{x.id}})</td>
+				<td><img src=image/{{x.image}}></td>
+				<td>{{x.message}}</td>
+				<!-- td>{{x.amount}}</td -->
+				<td>{{x.type}}</td>	
+				<td>{{x.endDate}}</td>
+				<td>{{x.startDate}}</td>
+			</tr>
+		</table>
+		<br>{{error}}<br>
+		<!--showPrice div-->
+			<div ng-controller="priceController" ng-show="priceFlag">
+				Insert highest Coupon Price you would like to display:<input type="text" ng-model="sprice">
+				<input type="button" value="Display" ng-click="price()">
+			</div>
+		<!--end showPrice div-->
+				
+		<!--showType div-->
+			<div ng-controller="typeController" ng-show="typeFlag">
+				Select the Type of Coupons you would like to display:
+				<select name="type" ng-model="stype">
+					<option value="">---Select Type---</option>
+					<option value="CAMPING">Camping</option>
+					<option value="ELECTRICITY">Electricity</option>
+					<option value="FOOD">Food</option>
+					<option value="HEALTH">Health</option>
+					<option value="RESTURANTS">Restaurants</option>
+					<option value="SPORTS">Sports</option>
+					<option value="TRAVELLING">Traveling</option>
+				</select>
+					<input type="button" value="Display" ng-click="type()">
+			</div>
+		<!--end showType div-->
+	
+		Show-Coupons Filters:
+		<input type="button" value="Coupon Type" ng-click="showType()">
+		<input type="button" value="Coupon Price" ng-click="showPrice()">
+		<input type="button" value="(All Coupons)" ng-click="all()">
+		<br><input type="button" value="User Log-Out" ng-click="logout()"><hr>
+		<br><input type="button" value="-- !! OPEN / CLOSE THE COUPON STORE !! --" ng-click="store()" align="center">
+	</div>
+	
+<!--end customer div-->
+
+<!--purchase div-->
+	<div ng-controller="storeController" ng-show="storeFlag">
+		<h1>Coupon Store</h1>
+		<!-- h3>All of the Coupons to chose from:</h3>
+		<h4>You may purchase any Coupon you would like, and make your dreams come true!!!</h4-->
+		{{storeError}}
+		<table border="1" style="width:100%">
+			<tr align="center">
+				<td>Title</td>
+				<td>Price</td>
+				<td>ID</td>
+				<td>Coupon Image</td>
+				<td>Side Comment</td>
+				<td>Amount Left in stock</td>
+				<td>Category Type</td>
+				<td>Expiration Date</td>
+				<td>In the market since:</td>
+				<td><!-- input type="button" value="Close Store" ng-click="close()"--></td>
+			</tr><tr align="center" ng-repeat="x in allStore.slice(0,-2)  | orderBy: 'title' ">
+				<td>{{x.title}}</td>	
+				<td>{{x.price}}</td>
+				<td>({{x.id}})</td>
+				<td><img src=image/{{x.image}}></td>
+				<td>{{x.message}}</td>
+				<td>{{x.amount}}</td>
+				<td>{{x.type}}</td>	
+				<td>{{x.endDate}}</td>
+				<td>{{x.startDate}}</td>
+				<td><input type="button" value="Purchase Coupon" ng-click="purchase(x.id,x.price)"></td>
+			</tr>
+			</table>
+		</div>
+<!--end purchase div-->
+</div>
+</body></html>

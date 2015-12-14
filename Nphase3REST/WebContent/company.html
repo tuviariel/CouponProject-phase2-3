@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+<script src="company.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1255">
+<title>Company</title>
+</head>
+<body>
+<!-- MAIN DIV -->
+<div ng-app="myApp123">
+
+	<!--login div-->
+	<div ng-controller="loginController" ng-show="loginFlag">
+	<table>
+		<tr><td>
+				Please enter your name:
+			</td><td>
+				<input type="text" ng-model="name">
+		</td></tr>
+		<tr><td>
+				Please enter your password:
+			</td><td>
+				<input type="password" ng-model="password">
+		</td></tr>
+		<tr><td></td><td>
+				<input type="button" value="Login" ng-click="login()">
+		</td></tr>
+	</table>
+	<br>{{loginResult}}<br>
+	<a href="index.html">Leave to Main Menu</a>
+	</div>
+<!--end login div-->
+
+
+
+<!--coupon div-->
+	<div ng-controller="companyController" ng-show="companyFlag">
+		<h1>{{header}}</h1>
+		<table align="center" border="1" style="width:100%" sortable>
+			<tr align="center">
+				<td>(ID)</td>
+				<td>Coupon Title</td>
+				<td align="center">Expiration Date</td>
+				<td>Amount</td>
+				<td>Category Type</td>
+				<td>Side Comment</td>
+				<td>Price</td>
+				<td>Coupon Image</td>
+				<td>Created Date</td>
+				<td></td>
+			</tr>
+			<tr align="center" ng-repeat="x in allCoupons.slice(0,-2)  | orderBy: 'title' ">
+				<td>({{x.id}})</td>
+				<td>{{x.title}}</td>	
+				<td>{{x.endDate}}</td>
+				<td>{{x.amount}}</td>
+				<td>{{x.type}}</td>	
+				<td>{{x.message}}</td>
+				<td>{{x.price}}</td>
+				<td><img src=image/{{x.image}} width="48" height="48"></td>
+				<td>{{x.startDate}}</td>
+				<td><input type="button" value="Update" ng-click="update(x.id,x.title,x.amount,x.type,x.message,x.price,x.image,x.startDate)">
+				<input type="button" value="Delete" ng-click="del(x.id)"><td>
+			</tr>
+			<tr>
+				<td>Add:</td>
+				<td><input type="text" style="width:3cm;" ng-model="title" required></td>	
+				<td><input type="date" style="width:3cm;" ng-model="HTMLdate" required></td>
+				<td><input type="text"  style="width:1.5cm;" ng-model="amount"></td> <!-- type="number" min="10" step="5" value="50" -->
+				<td><select name="type" ng-model="type" required>
+					<option value="">---Select Type---</option>
+					<option value="CAMPING">Camping</option>
+					<option value="ELECTRICITY">Electricity</option>
+					<option value="FOOD">Food</option>
+					<option value="HEALTH">Health</option>
+					<option value="RESTURANTS">Restaurants</option>
+					<option value="SPORTS">Sports</option>
+					<option value="TRAVELLING">Traveling</option></select></td>	
+				<td><input type="text" ng-model="message"></td>
+				<td><input type="text" style="width:1.5cm;" ng-model="price"></td>
+				<td><select name="image" ng-model="image">
+					<option value="">---Select Image---</option>
+					<option value="backpack.png">backpack</option>
+					<option value="bomb.png">bomb</option>
+					<option value="book.png">book</option>
+					<option value="clock.png">clock</option>
+					<option value="coffee-machine.png">coffee machine</option>
+					<option value="computer-pc.png">computer</option>
+					<option value="diving-gear.png">diving gear</option>
+					<option value="globe.png">globe</option>
+					<option value="hotdog.png">hot-dog</option>
+					<option value="icecreame.png">ice-creame</option>
+					</select>
+					</td>
+				<td>{{today}}</td>
+				<td><input type="button" value="Add this Coupon" ng-click="add()"><td>
+			</tr> 
+		</table>
+		<br>{{error}}<br>
+			<!--showEndDate div-->
+		<div ng-controller="endDateController" ng-show="endDateFlag">
+			Insert latest Coupon Expiration Date you would like to display: <input type="date" ng-model="sHTMLdate">
+			<input type="button" value="Display" ng-click="endDate()">
+		</div>
+	<!--end showEndDate div-->
+	
+	
+	<!--showPrice div-->
+		<div ng-controller="priceController" ng-show="priceFlag">
+			Insert highest Coupon Price you would like to display:<input type="text" ng-model="sprice">
+			<input type="button" value="Display" ng-click="price()">
+		</div>
+		
+	<!--end showPrice div-->
+	
+	
+	<!--showType div-->
+		<div ng-controller="typeController" ng-show="typeFlag">
+			Select the Type of Coupons you would like to display:
+			<select name="type" ng-model="stype">
+				<option value="">---Select Type---</option>
+				<option value="CAMPING">Camping</option>
+				<option value="ELECTRICITY">Electricity</option>
+				<option value="FOOD">Food</option>
+				<option value="HEALTH">Health</option>
+				<option value="RESTURANTS">Restaurants</option>
+				<option value="SPORTS">Sports</option>
+				<option value="TRAVELLING">Traveling</option>
+			</select>
+				<input type="button" value="Display" ng-click="type()">
+		</div>
+	<!--end showType div-->
+	
+	
+	<!--showById div-->
+		<div ng-controller="byIdController" ng-show="byIdFlag">
+			Insert the Id of Coupon you would like to display:<input type="text" ng-model="sid"> <!--  type="number" min="1" string-to-number -->
+			<input type="button" value="Display" ng-click="byId()">
+		</div>
+	<!--end showPrice div-->
+			
+		Show-Coupons Filters:
+		<input type="button" value="Coupon Type" ng-click="showType()">
+		<input type="button" value="Coupon Exp. Date" ng-click="showEndDate()">
+		<input type="button" value="Coupon Price" ng-click="showPrice()">
+		<input type="button" value="Coupon ID" ng-click="showById()">
+		<input type="button" value="(All Coupons)" ng-click="all()"><br><hr>
+		<input type="button" value="User Log-Out" ng-click="logout()"><br>
+		<input type="button" value="Show Incomes" ng-click="showIncomes()"><br>
+	</div>
+<!--end coupon div-->
+
+<!--update Coupon div-->
+	<div ng-controller="updateController" ng-show="updateFlag">
+		<h1>Update Coupon</h1>
+		<h4>Coupon's 'Id', 'Title' and  'Created Date' are unchangeable, 'Expiration Date' must be reconfirmed, and all other parameters may be changed as you wish.</h4>
+		<table border="1">
+			<tr align="center">
+				<td></td>
+				<td>ID</td>
+				<td>Coupon Title</td>
+				<td>Expiration Date</td>
+				<td>Amount</td>
+				<td>Category Type</td>
+				<td>Side Comment</td>
+				<td>Price</td>
+				<td>Coupon Image</td>
+				<td>Created Date</td>
+				<td><input type="button" value="Back" ng-click="back()"></td>
+			</tr>
+			<tr align="center">
+				<td>Change:</td>
+				<td>{{Cid}}</td>	
+				<td>{{Ctitle}}</td>	
+				<td><input type="date" ng-model="CendDate" required></td> <!-- value="{{CendDate}}" -->
+				<td><input type="text" style="width:1.5cm;" ng-model="Camount" value="{{amount}}"></td>
+				<td><select name="type" ng-model="Ctype" value="{{type}}" required>
+					<option value="CAMPING">Camping</option>
+					<option value="ELECTRICITY">Electricity</option>
+					<option value="FOOD">Food</option>
+					<option value="HEALTH">Health</option>
+					<option value="RESTURANTS">Restaurants</option>
+					<option value="SPORTS">Sports</option>
+					<option value="TRAVELLING">Traveling</option></select></td>
+				<td><input type="text" value="{{message}}" ng-model="Cmessage"></td> <!-- maxlength="200" value="Input side comment:" -->
+				<td><input type="text" value="{{price}}" style="width:1.5cm;" ng-model="Cprice"></td>
+				<td><select name="image" value="{{image}}" ng-model="Cimage">
+					<option value="">---Select Image---</option>
+					<option value="backpack.png">backpack</option>
+					<option value="bomb.png">bomb</option>
+					<option value="book.png">book</option>
+					<option value="clock.png">clock</option>
+					<option value="coffee-machine.png">coffee machine</option>
+					<option value="computer-pc.png">computer</option>
+					<option value="diving-gear.png">diving gear</option>
+					<option value="globe.png">globe</option>
+					<option value="hotdog.png">hot-dog</option>
+					<option value="icecreame.png">ice-creame</option>
+				</select>
+				</td> <!-- file -->
+				<td>{{CstartDate}}</td>
+				<td><input type="button" value="Update" ng-click="Cupdate(id)"></td>
+			</tr> 
+			</table>
+			{{UpdateError}}
+		</div>
+		
+<!--end update coupon div-->
+
+<div ng-controller="incomes" ng-show="incomesFlag">
+		
+		<table border="1">
+			<tr>
+				<td>ID</td>
+				<td>Name</td>
+				<td>Date</td>
+				<td>Description</td>
+				<td>Amount</td>
+			</tr>
+			<tr ng-repeat="x in incomes.slice(0,-2)   | orderBy:'name' ">
+				<td>{{x.id}}</td>	
+				<td>{{x.name}}</td>	
+				<td>{{x.date}}</td>
+				<td>{{x.description}}</td>
+				<td>{{x.amount}}</td>
+			</tr> 
+			</table>
+		
+		
+	</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</body></html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+<script src="admin.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1255">
+<title>Administrator</title>
+</head>
+<body>
+
+<div ng-app="myApp123">
+	
+	<div ng-controller="showCompanies" ng-show="showCompaniesFlag">
+		<table border="1">
+			<tr>
+				<td>ID</td>
+				<td>Name</td>
+				<td>Password</td>
+				<td>Email</td>
+			</tr>
+			<tr ng-repeat="x in allItemsResult.slice(0,-2)| orderBy:'name' ">
+				<td>{{x.id}}</td>	
+				<td>{{x.name}}</td>	
+				<td>{{x.password}}</td>
+				<td>{{x.email}}</td>
+				<td><input type="button" value="Update" ng-click="update(x.id,x.name,x.password,x.email)"><td>
+				<td><input type="button" value="Delete"  ng-click="del(x.id)"><td>
+			</tr> 
+			<br>
+			<tr>
+				<td></td>	
+				<td><input type="text" ng-model="name"></input></td>	
+				<td><input type="text" ng-model="password"></input></td>
+				<td><input type="email" ng-model="email"></input></td>
+				<td><input type="button" value="Add"  ng-click="add()"><td>
+			</tr> 
+			
+	
+		
+		
+		</table>
+		{{error}}
+		<br><input type="button" value="Logout" ng-click="logout()">
+		<br><br><input type="button" value="Show Customers" ng-click="ShowCustomer()">
+	</div>
+	
+	<div ng-controller="updateCompany" ng-show="updateCompanyFlag">
+	<table border="1">
+		<tr>
+				<td>ID</td>
+				<td>Name</td>
+				<td>Password</td>
+				<td>Email</td>
+			</tr>
+			<tr>
+				
+				<td>{{Uid}}</td>	
+				<td>{{Uname}}</td>	
+				<td><input type="text" ng-model="Upassword" value={{passowrd}}></input></td>
+				<td><input type="email" ng-model="Uemail"></input></td>
+				<td><input type="button" value="Update"  ng-click="update(Uid)"><td>
+			</tr> 
+			</table>
+			{{error}}
+		</div>
+	
+	
+	
+	
+	<div ng-controller="showCustomers" ng-show="showCustomersFlag">
+	
+		<table border="1">
+			<tr>
+				<td>ID</td>
+				<td>Name</td>
+				<td>Password</td>
+				
+				
+			</tr>
+			<tr ng-repeat="x in allCustomers.slice(0,-2)   | orderBy:'name'" >
+				<td>{{x.id}}</td>	
+				<td>{{x.custName}}</td>	
+				<td>{{x.password}}</td>
+				<td><input type="button" value="Update" ng-click="update(x.id,x.custName,x.password)"><td>
+				<td><input type="button" value="Delete" ng-click="del(x.id)"><td>
+			</tr> 
+			<br>
+			<tr>
+				<td></td>	
+				<td><input type="text" ng-model="name"></input></td>	
+				<td><input type="text" ng-model="password"></input></td>
+				<td><input type="button" value="Add" ng-click="add()"><td>
+			</tr>
+		</table>
+		{{errorcust}}
+		
+		<br><input type="button" value="Logout" ng-click="logout()">
+		<br><br><input type="button" value="Show Companies" ng-click="showCompanies()">
+		
+	</div>
+	
+	<div ng-controller="updateCustomer" ng-show="updateCustomerFlag">
+	
+		<table border="1">
+			<tr>
+				<td>ID</td>
+				<td>Name</td>
+				<td>Password</td>
+				
+				
+			</tr>
+			
+			<tr>
+				<td>{{Cid}}</td>	
+				<td>{{Cname}}</td>	
+				<td><input type="text" ng-model="Cpassword"></input></td>
+				<td><input type="button" value="Update" ng-click="update()"><td>
+			</tr>
+		</table>
+		{{errorcust}}
+		
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	<div ng-controller="facade" ng-show="facadeFlag">
+	
+		<br>
+		<input type="button" value="Show Companies" ng-click="showCompanies()"><br><br>
+		<input type="button" value="Show Customers" ng-click="showCustomers()"><br><br>
+		
+		<input type="button" value="Show all Incomes" ng-click="showIncomes()"><br><br>
+		<input type="button" value="Logout" ng-click="logout()">
+		
+	</div>
+	<!-- END OF SUM DIV -->
+	
+	<hr/>
+	<br/>
+	
+	
+	
+	
+	<div ng-controller="incomes" ng-show="incomesFlag">
+		Show By Name:
+		<input type="text" ng-model="incomName"></input>
+		<br>
+		<input type="button" value="Show Income by Name" ng-click="showIncomeByName()">
+		<br>
+		<table border="1">
+			<tr>
+				<td>ID</td>
+				<td>Name</td>
+				<td>Date</td>
+				<td>Description</td>
+				<td>Amount</td>
+			</tr>
+			<tr ng-repeat="x in incomes.slice(0,-2)   | orderBy:'name' ">
+				<td>{{x.id}}</td>	
+				<td>{{x.name}}</td>	
+				<td>{{x.date}}</td>
+				<td>{{x.description}}</td>
+				<td>{{x.amount}}</td>
+			</tr> 
+			</table>
+		
+		
+	</div>
+	
+
+
+
+
+
+
+
+	<!-- CONTROL PANEL -->
+
+	<div ng-controller="login" ng-show="loginFlag">
+	{{result}}
+	<table>
+		<tr>
+			<td>
+				Please enter your name:
+			</td>
+			<td>
+				<input style="text" name="name" id="name" ng-model="name">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Please enter your password:
+			</td>
+			<td>
+				<input style="password" name="password" id="password" ng-model="password">
+			</td>
+		</tr>
+		<tr>
+			<td>
+			</td>
+			<td>
+				<input type="button" value="login" ng-click="login()"/>
+			</td>
+		</tr>
+	</table>
+	
+	</div>
+
+	<a href="index.html">Leave to Menu</a>
+
+
+</div>
+<!-- END OF MAIN DIV -->
+</body>
+</html>
